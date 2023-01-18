@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC - Google Identity</title>
+</head>
+
+<body>
+    <script src="https://accounts.google.com/gsi/style" type="text/css" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload" data-client_id="932424351495-h141pd69c2rermoreh51pnbmb12ke4o3.apps.googleusercontent.com"
+        data-context="signin" data-ux_mode="popup" data-callback="onSignIn" data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
+        data-size="large" data-logo_alignment="left">
+    </div>
+    <script>
+        function onSignIn(googleUser) {
+            const profile = JSON.parse(atob(googleUser.credential.split('.')[1]));
+            console.log(profile);
+            // console.log(google);
+            // const client = google.accounts.oauth2.initTokenClient({
+            //     client_id: '932424351495-h141pd69c2rermoreh51pnbmb12ke4o3.apps.googleusercontent.com',
+            //     callback: (tokenResponse) => {
+            //         console.log(tokenResponse)
+            //         fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+            //             headers: {
+            //                 'Authorization': 'Bearer ' + tokenResponse.access_token
+            //             }
+            //         }).then(function(response) {
+            //             return response.json();
+            //         }).then(function(data) {
+            //             console.log(data);
+            //         });
+            //     },
+            //     scope: 'https://www.googleapis.com/auth/userinfo.profile'
+            // });
+            // client.requestAccessToken();
+        }
+
+    </script>
+</body>
+
+</html>
