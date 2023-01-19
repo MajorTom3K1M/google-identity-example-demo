@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC - Google Identity Google Calendar Permission</title>
+</head>
+
+<body>
+    <script src="https://accounts.google.com/gsi/style" type="text/css" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="signinDiv"></div>
+    <button id="requestDiv" hidden="true" onclick="requestCalendarAccess()">Calendar Access</button>
+    <script>
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: '932424351495-h141pd69c2rermoreh51pnbmb12ke4o3.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(document.getElementById("signinDiv"), {
+                theme: 'outline',
+                size: 'large'
+            });
+        }
+
+        function handleCredentialResponse(googleUser) {
+            if (googleUser.credential) {
+                document.getElementById("requestDiv").hidden = false;
+            }
+        }
+
+        function requestCalendarAccess() {
+            const client = google.accounts.oauth2.initTokenClient({
+                client_id: '932424351495-h141pd69c2rermoreh51pnbmb12ke4o3.apps.googleusercontent.com',
+                callback: (tokenResponse) => {
+                    fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+                        headers: {
+                            Authorization: `Bearer ${tokenResponse.access_token}`
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                        });
+                },
+                scope: 'https://www.googleapis.com/auth/calendar'
+            });
+            client.requestAccessToken();
+        }
+    </script>
+</body>
+
+</html>
